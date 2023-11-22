@@ -77,3 +77,17 @@ export const updateUser = async (id: string, body: any) => {
     throw new Error("update internal server error");
   }
 };
+
+export const authUser = async (body: any) => {
+  try {
+    const { username, password } = body;
+    return await new Promise(function (resolve, reject) {
+      if (!username || !password) reject("error");
+      resolve(`user: ${username} authorized`);
+    });
+  }
+  catch (e) {
+    console.error(e);
+    throw new Error("auth internal server error");
+  }
+}

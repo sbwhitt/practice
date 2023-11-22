@@ -4,6 +4,11 @@ export interface User {
   password: string
 }
 
+export interface UserAuth {
+  status: number,
+  token: string | null
+}
+
 export const createUser = async (username: string, password: string): Promise<number> => {
   return await fetch("http://localhost:3000/users", {
     method: "POST",
@@ -65,3 +70,22 @@ export const deleteUser = async (id: string): Promise<number> => {
     throw new Error("error deleting user");
   });
 };
+
+export const authUser = async (username: string, password: string): Promise<string> => {
+  return await fetch("http://localhost:3000/users/auth", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password })
+  })
+  .then((response) => {
+    if (response.status === 200) return response.text();
+    else return "";
+  })
+  .then((data) => data)
+  .catch((err) => {
+    console.error(err);
+    throw new Error("error deleting user");
+  });
+}

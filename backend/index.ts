@@ -1,6 +1,12 @@
 import cors from 'cors';
 import express from 'express';
-import { getUsers, createUser, deleteUser, updateUser } from './models/userModel';
+import {
+  getUsers,
+  createUser,
+  deleteUser,
+  updateUser,
+  authUser 
+} from './models/userModel';
 
 const app = express();
 const port = 3000;
@@ -41,6 +47,12 @@ app.delete('/users/:id', (req, res) => {
 app.put('/users/:id', (req, res) => {
   updateUser(req.params.id, req.body)
     .then(response => res.status(200).send(response))
+    .catch(err => res.status(500).send(err));
+});
+
+app.post('/users/auth', (req, res) => {
+  authUser(req.body)
+    .then(() => res.status(200).send("token"))
     .catch(err => res.status(500).send(err));
 });
 
